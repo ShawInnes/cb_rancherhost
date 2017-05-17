@@ -1,6 +1,8 @@
 ---
 driver:
   name: vagrant
+  provider: virtualbox
+  linked_clone: true
 
 provisioner:
   name: chef_zero
@@ -8,19 +10,39 @@ provisioner:
   # For example:
   #   always_update_cookbooks: <%= !ENV['CI'] %>
   always_update_cookbooks: true
+  require_chef_omnibus: 12.20.3
 
 verifier:
   name: inspec
 
 platforms:
-  - name: ubuntu-16.04
   - name: centos-7.2
 
 suites:
-  - name: default
+  - name: server
+    driver:
+      vm_hostname: server.rancher.local
+      network:
+      - ["private_network", {ip: "192.168.33.33"}]
+      - ["forwarded_port", {guest: 8080, host: 8080}]
     run_list:
-      - recipe[cb_rancherhost::default]
+      - recipe[cb_rancherhost::server]
     verifier:
       inspec_tests:
-        - test/smoke/default
+        - test/smoke/server
     attributes:
+
+  - name: agent
+    driver:
+      vm_hostname: agent.rancher.local
+      network:
+      - ["private_network", {ip: "192.168.33.44"}]
+    run_list:
+      - recipe[cb_rancherhost::agent]
+    verifier:
+      inspec_tests:
+        - test/smoke/agent
+    attributes:
+      rancher:
+        server:
+          host: server.rancher.local
