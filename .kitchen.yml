@@ -45,4 +45,4 @@ suites:
     attributes:
       rancher:
         server:
-          host: server.rancher.local
+          host: 192.168.33.33

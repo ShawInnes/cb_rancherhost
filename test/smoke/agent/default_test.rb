@@ -10,3 +10,7 @@ describe service('docker') do
   it { should be_enabled }
   it { should be_running }
 end
+
+describe command('docker ps | grep rancher/agent') do
+  its('stdout') { should match (/rancher\/agent/) }
+end

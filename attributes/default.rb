@@ -1,3 +1,5 @@
+default['rancher']['docker']['script'] = 'https://releases.rancher.com/install-docker/17.03.sh'
+
 # image and tag to use for rancher server image
 default['rancher']['server']['image'] = 'rancher/server'
 default['rancher']['server']['version'] = 'latest'

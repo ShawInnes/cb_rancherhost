@@ -6,9 +6,6 @@
 # found at http://inspec.io/docs/reference/resources/
 
 # This is an example test, replace it with your own test.
-describe port(8080) do
-  it { should be_listening }
-end
 
 describe service('docker') do
   it { should be_installed }
@@ -16,10 +13,10 @@ describe service('docker') do
   it { should be_running }
 end
 
-describe docker_image('rancher/server') do
-  it { should exist }
-  its('tag') { should eq 'latest' }
+describe command('docker ps | grep rancher/server') do
+  its('stdout') { should match (/rancher\/server/) }
 end
 
-# describe docker_container() do
-# end
+describe port(8080) do
+  it { should be_listening }
+end
