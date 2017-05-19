@@ -16,7 +16,15 @@ verifier:
   name: inspec
 
 platforms:
+  - name: rhel-7.3
+    driver:
+      box: rhel73
+      provision: true
+      vagrantfiles:
+        - vagrant.rb
   - name: centos-7.2
+    driver:
+      box: centos-7.2
 
 suites:
   - name: server
